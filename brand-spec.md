@@ -12,7 +12,12 @@ Background #0A0A0B, surfaces #141417, foreground #EDEDEF, muted #8B8B93, accent 
 8px spacing basis, 8px corners, 1px rgba(255,255,255,.09) borders; no shadows, glow, or UI gradients.
 No entry animation. Immediate preview adjustments and short hover feedback only.
 
-Assets: dist/assets/shell.webp, terrain.webp, arch.webp, orbit.webp — original procedural sculptural studies.
+Current assets: dist/assets/marble-break.png, film-frame.png, digital-muses.png,
+night-bloom.png, listening-room.png — five images supplied by the user.
+Hero: violet marble portrait. Gallery: film frame, digital marble duo, floral
+portrait, listening room. Original pixels retained; only CSS focal framing.
+Both compare halves share identical cover fit and focal positions. Studio
+retains the full original portrait. All five sources generate actual ASCII.
 All displayed ASCII previews are converted from these sources using the actual tool engine.
 Brand glyph is typographic [ : : ], with a stacked GLYPH / LAB wordmark.
 English and Russian interface. Source is available as a local MIT-licensed download.
@@ -26,3 +31,6 @@ Hero: solid "Make it" followed by character-filled "ASCII.". Increased body and
 control sizes, lighter heading weights, stronger title-to-metadata contrast.
 Composition: bordered artwork stage, explicit two-line studio and gallery titles,
 more generous section rhythm and clearer artwork captions. No UI shadows or glow.
+
+Headline motion: medium (600) letter mask, 152 columns with gaps between glyphs,
+27 rows, 12 fps. Pause, visibility suspension, and reduced-motion fallback.

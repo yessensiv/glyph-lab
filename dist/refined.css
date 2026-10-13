@@ -274,3 +274,22 @@ button,a,summary { transition: color .12s,border-color .12s,background-color .12
   footer>div { font-size: 10px; }
 }
 @media(prefers-reduced-motion:reduce) { button,a,summary { transition: none; } }
+
+/* Portrait studies: both halves use exactly the same fit and focal point. */
+.hero-art { width: min(100%,460px); justify-self: end; }
+.hero-art .compare { aspect-ratio: 3/4; max-height: none; --image-focus: 50% 12%; }
+.hero-art .compare>img,.hero-art .ascii-layer canvas,
+.gallery .compare>img,.gallery .ascii-layer canvas { object-fit: cover; object-position: var(--image-focus,50% 50%); }
+.gallery .compare { aspect-ratio: 3/4; }
+.preview-compare { height: 510px; }
+.preview-compare>img,.preview-compare .ascii-layer canvas { object-fit: contain; }
+.destination-feature .character-output { aspect-ratio: 3/4; }
+.destination-duo .character-output { aspect-ratio: 4/3; }
+@media(max-width:1100px) { .hero-art { width: 100%; } .preview-compare { height: 490px; } }
+@media(max-width:800px) { .preview-compare { height: 460px; } }
+@media(max-width:620px) {
+  .hero-art { max-width: 460px; justify-self: center; margin: 0; }
+  .preview-compare { height: 435px; }
+  .destination-feature .character-output { aspect-ratio: 3/4; }
+  .destination-duo .character-output { aspect-ratio: 4/3; }
+}

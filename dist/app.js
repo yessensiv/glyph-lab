@@ -3,10 +3,11 @@
 const $ = (selector, root = document) => root.querySelector(selector);
 const $$ = (selector, root = document) => [...root.querySelectorAll(selector)];
 const samples = [
-  { id: 'shell', name: 'Spiral study', ru: 'Спираль времени', width: 160, color: true, preset: 'sculpted' },
-  { id: 'terrain', name: 'Quiet topography', ru: 'За горизонтом', width: 220, color: false, preset: 'detailed' },
-  { id: 'arch', name: 'The space between', ru: 'Пространство между', width: 180, color: false, preset: 'detailed' },
-  { id: 'orbit', name: 'A different orbit', ru: 'На своей орбите', width: 120, color: false, preset: 'terminal' }
+  { id: 'marble-break', name: 'Marble, off duty', ru: 'Мрамор на отдыхе', width: 180, color: true, preset: 'sculpted' },
+  { id: 'film-frame', name: 'Two perspectives', ru: 'Два взгляда', width: 220, color: true, preset: 'editorial' },
+  { id: 'digital-muses', name: 'Classics, remixed', ru: 'Классика в ремиксе', width: 220, color: true, preset: 'editorial' },
+  { id: 'night-bloom', name: 'After dark', ru: 'После заката', width: 180, color: true, preset: 'sculpted' },
+  { id: 'listening-room', name: 'Analog ritual', ru: 'Аналоговый ритуал', width: 220, color: true, preset: 'editorial' }
 ];
 const presets = {
   sculpted: { width: 160, style: 'detailed', color: true, contrast: 115 },
@@ -29,14 +30,14 @@ const cache = new Map();
 let lang = 'en';
 let currentSample = 0;
 let currentImage;
-let currentName = 'Spiral study';
+let currentName = 'Marble, off duty';
 let currentOutput;
 let currentPreset = 'sculpted';
 let sourceToken = 0;
 let frameQueued = false;
 let slideshow;
 let toastTimer;
-let fileInfo = { sample: true, name: 'spiral-study.webp' };
+let fileInfo = { sample: true, name: 'marble-break.png' };
 const englishNodes = $$('[data-ru]').map(element => ({ element, html: element.innerHTML }));
 
 function localized(en, ru) { return lang === 'ru' ? ru : en; }
@@ -207,12 +208,12 @@ async function selectSample(id, recipe, scroll = false) {
   if (index < 0) return;
   const sample = samples[index];
   try {
-    const image = await loadImage(`assets/${id}.webp`);
+    const image = await loadImage(`assets/${id}.png`);
     if (token !== sourceToken) return;
     currentSample = index;
     currentImage = image;
     currentName = sample.name;
-    fileInfo = { sample: true, name: `${id}-study.webp` };
+    fileInfo = { sample: true, name: `${id}.png` };
     $('#studio-original').src = image.src;
     $('#studio-original').alt = `${sample.name} original image`;
     applyPreset(recipe || sample.preset);
@@ -402,7 +403,7 @@ async function initializeArtwork() {
   const tasks = $$('[data-art], [data-output]').map(async element => {
     const id = element.dataset.art || element.dataset.output;
     try {
-      const image = await loadImage(`assets/${id}.webp`);
+      const image = await loadImage(`assets/${id}.png`);
       const output = convert(image, { ...defaults, width: Number(element.dataset.width), color: element.dataset.color === 'true' });
       if (element.dataset.output) renderTextOutput(element, output);
       else drawASCII($('canvas', element), output);
@@ -485,6 +486,6 @@ async function initialize() {
   let preferredLanguage;
   try { preferredLanguage = localStorage.getItem('glyph-lab-language'); } catch { /* No persistence required. */ }
   if (preferredLanguage === 'ru') changeLanguage('ru');
-  await Promise.all([initializeArtwork(), selectSample('shell')]);
+  await Promise.all([initializeArtwork(), selectSample('marble-break')]);
 }
 initialize();

@@ -12,16 +12,16 @@
   texture.setAttribute('mask', 'url(#title-mask)');
   texture.setAttribute('fill', '#ededef');
   texture.setAttribute('font-family', 'monospace');
-  texture.setAttribute('font-size', '4.5');
+  texture.setAttribute('font-size', '4.8');
   texture.setAttribute('aria-hidden', 'true');
   texture.style.display = 'none';
-  const columns = 144;
-  const rowCount = 25;
+  const columns = 152;
+  const rowCount = 27;
   const rows = [];
   for (let y = 0; y < rowCount; y++) {
     const row = document.createElementNS(ns, 'text');
     row.setAttribute('x', '0');
-    row.setAttribute('y', String(y * 6 + 4.5));
+    row.setAttribute('y', String(y * 5.6 + 4.6));
     row.setAttribute('textLength', '585');
     row.setAttribute('lengthAdjust', 'spacingAndGlyphs');
     texture.append(row);
@@ -49,7 +49,7 @@
         line += glyphs[index];
       }
       rows[y].textContent = line;
-      rows[y].setAttribute('opacity', String(.68 + .22 * (Math.sin(y * .2 - time) * .5 + .5)));
+      rows[y].setAttribute('opacity', String(.78 + .18 * (Math.sin(y * .2 - time) * .5 + .5)));
     }
   }
 

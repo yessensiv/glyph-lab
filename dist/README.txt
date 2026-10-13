@@ -14,7 +14,9 @@ Files are processed using Canvas and ImageBitmap on the visitor's device.
 Controls: image upload/drop/paste; presets; 40–280 columns; five character
 ramps; color; invert; brightness; contrast; cell aspect; dithering.
 Exports: plain-text clipboard, TXT, PNG, SVG.
-Demo artwork: four original procedural mathematical sculptures.
+Demo images: five project-supplied artworks and photographs. Their rights
+remain with their respective owners; the MIT code license does not grant
+additional rights to these images.
 Languages: English and Russian.
 
 index.html  — page structure and copy
