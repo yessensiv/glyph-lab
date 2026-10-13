@@ -17,16 +17,6 @@
 
 ---
 
-## / FIRST LOOK
-
-<p align="center">
-  <a href="https://glyph-lab-livid.vercel.app/">
-    <img src="docs/site-preview.png" alt="GLYPH LAB mobile interface: animated ASCII headline, upload actions and original-to-ASCII comparison" width="420">
-  </a>
-</p>
-
-<p align="center"><sub>Actual screenshot of the live site · Click to open the studio ↗</sub></p>
-
 ## / THE STUDIO
 
 **Your image, rebuilt one character at a time.**
