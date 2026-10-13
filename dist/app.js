@@ -3,11 +3,12 @@
 const $ = (selector, root = document) => root.querySelector(selector);
 const $$ = (selector, root = document) => [...root.querySelectorAll(selector)];
 const samples = [
-  { id: 'marble-break', name: 'Marble, off duty', ru: 'Мрамор на отдыхе', width: 180, color: true, preset: 'sculpted' },
-  { id: 'film-frame', name: 'Two perspectives', ru: 'Два взгляда', width: 220, color: true, preset: 'editorial' },
-  { id: 'digital-muses', name: 'Classics, remixed', ru: 'Классика в ремиксе', width: 220, color: true, preset: 'editorial' },
-  { id: 'night-bloom', name: 'After dark', ru: 'После заката', width: 180, color: true, preset: 'sculpted' },
-  { id: 'listening-room', name: 'Analog ritual', ru: 'Аналоговый ритуал', width: 220, color: true, preset: 'editorial' }
+  { id: 'marble-break', name: 'Marble, off duty', ru: 'Мрамор на отдыхе', width: 180, color: true, preset: 'sculpted', style: 'ink', contrast: 125, brightness: 4, inkLift: 25 },
+  { id: 'film-frame', name: 'Two perspectives', ru: 'Два взгляда', width: 180, color: true, preset: 'editorial', style: 'simple', contrast: 130, brightness: 8, inkLift: 45 },
+  { id: 'digital-muses', name: 'Classics, remixed', ru: 'Классика в ремиксе', width: 150, color: true, preset: 'editorial', style: 'ink', contrast: 165, brightness: -24, inkLift: 25 },
+  { id: 'night-bloom', name: 'After dark', ru: 'После заката', width: 150, color: true, preset: 'sculpted', style: 'ink', contrast: 115, brightness: 24, inkLift: 65 },
+  { id: 'listening-room', name: 'Analog ritual', ru: 'Аналоговый ритуал', width: 200, color: true, preset: 'editorial', style: 'simple', contrast: 140, brightness: -8, inkLift: 30 },
+  { id: 'orbit', file: 'assets/orbit.webp', name: 'Orbital loop', ru: 'Орбитальный узел', width: 56, color: false, preset: 'chat', style: 'simple', contrast: 150, brightness: -4, inkLift: 0 }
 ];
 const presets = {
   sculpted: { width: 160, style: 'detailed', color: true, contrast: 115 },
@@ -17,14 +18,15 @@ const presets = {
   readme: { width: 80, style: 'simple', color: false, contrast: 140 },
   terminal: { width: 100, style: 'dense', color: false, contrast: 125 },
   editorial: { width: 240, style: 'detailed', color: true, contrast: 110 },
-  chat: { width: 56, style: 'dense', color: false, contrast: 135 }
+  chat: { width: 56, style: 'simple', color: false, contrast: 150 }
 };
 const ramps = {
   simple: ' .:-=+*#%@',
   dense: ' .,:;irsXA253hMHGS#9B&@',
   detailed: ' .\'`^",:;Il!i~+_-?][}{1)(|\\/tfjrxnuvczXYUJCLQ0OZmwqpdbkhao*#MW&8%B@$',
   blocks: ' ░▒▓█',
-  binary: ' 01'
+  binary: ' 01',
+  ink: '@%#&'
 };
 const cache = new Map();
 let lang = 'en';
@@ -74,7 +76,7 @@ function convert(image, settings) {
   ctx.fillRect(0, 0, width, height);
   ctx.drawImage(image, 0, 0, width, height);
   const data = ctx.getImageData(0, 0, width, height).data;
-  const ramp = ramps[settings.style];
+  const ramp = settings.style === 'ink' && !settings.color ? ramps.simple : ramps[settings.style];
   const rows = [];
   const colors = [];
   let errorRow = new Float32Array(width + 2);
@@ -91,7 +93,16 @@ function convert(image, settings) {
       brightness = Math.max(0, Math.min(255, brightness));
       const index = Math.round(brightness / 255 * (ramp.length - 1));
       row += ramp[index];
-      if (settings.color) colorRow.push([data[p], data[p + 1], data[p + 2]]);
+      if (settings.color) {
+        // Compensate for the empty area around each printed character. Exposure
+        // preserves dark blacks and dominant hues instead of washing colors out.
+        const gain = 1 + (settings.inkLift || 0) / 100 * 2;
+        colorRow.push([data[p], data[p + 1], data[p + 2]].map(channel => {
+          let tone = (channel - 128) * settings.contrast + 128 + settings.brightness;
+          if (settings.style === 'ink' && settings.invert) tone = 255 - tone;
+          return Math.round(Math.max(0, Math.min(255, tone * gain)));
+        }));
+      }
       if (settings.dither) {
         const error = brightness - index / (ramp.length - 1) * 255;
         errorRow[x + 2] += error * 7 / 16;
@@ -138,7 +149,7 @@ function getSettings() {
   return { width: Number($('#width').value), style: $('#style').value, color: $('#color').checked,
     invert: $('#invert').checked, brightness: Number($('#brightness').value),
     contrast: Number($('#contrast').value) / 100, aspect: Number($('#aspect').value) / 100,
-    dither: $('#dither').checked };
+    dither: $('#dither').checked, inkLift: Number($('#ink-lift').value) };
 }
 
 function updateOutput() {
@@ -151,7 +162,9 @@ function updateOutput() {
   $('#brightness-value').textContent = settings.brightness;
   $('#contrast-value').textContent = settings.contrast.toFixed(2);
   $('#aspect-value').textContent = settings.aspect.toFixed(2);
+  $('#ink-lift-value').textContent = settings.inkLift;
   $('#output-spec').textContent = `${currentOutput.width} × ${currentOutput.height} chars`;
+  $('#ink-export-note').hidden = !(settings.style === 'ink' && settings.color);
   $('#expanded-spec').textContent = `${currentOutput.width} × ${currentOutput.height} / ${settings.color ? 'color' : 'mono'} / ${settings.style}`;
   if ($('#expanded-preview').open) drawASCII($('#expanded-canvas'), currentOutput);
   for (const input of $$('input[type="range"]:not(.compare-range)')) {
@@ -180,6 +193,7 @@ function applyPreset(name) {
   $('#color').checked = preset.color;
   $('#contrast').value = preset.contrast;
   $('#brightness').value = 0;
+  $('#ink-lift').value = preset.color ? 30 : 0;
   $('#aspect').value = 50;
   $('#invert').checked = false;
   $('#dither').checked = false;
@@ -208,21 +222,45 @@ async function selectSample(id, recipe, scroll = false) {
   if (index < 0) return;
   const sample = samples[index];
   try {
-    const image = await loadImage(`assets/${id}.png`);
+    const image = await loadImage(sample.file || `assets/${id}.png`);
     if (token !== sourceToken) return;
     currentSample = index;
     currentImage = image;
     currentName = sample.name;
-    fileInfo = { sample: true, name: `${id}.png` };
+    fileInfo = { sample: true, name: (sample.file || `${id}.png`).split('/').pop() };
     $('#studio-original').src = image.src;
     $('#studio-original').alt = `${sample.name} original image`;
     applyPreset(recipe || sample.preset);
-    if (!recipe) { $('#width').value = sample.width; $('#color').checked = sample.color; updateOutput(); }
+    if (!recipe) applySampleLook(sample);
+    else {
+      const recipeWidth = presets[recipe].width;
+      const recipeColor = presets[recipe].color;
+      applySampleLook(sample);
+      $('#width').value = recipeWidth;
+      $('#color').checked = recipeColor;
+      if (!recipeColor) {
+        $('#ink-lift').value = 0;
+        if ($('#style').value === 'ink') $('#style').value = 'simple';
+      }
+      updateOutput();
+    }
     setStatus();
     if (scroll) scrollToStudio();
   } catch {
     toast('This sample could not load. Please choose a local file.', 'Не удалось загрузить образец. Выберите локальный файл.');
   }
+}
+
+function applySampleLook(sample) {
+  currentPreset = '';
+  highlightPreset();
+  $('#width').value = sample.width;
+  $('#color').checked = sample.color;
+  $('#style').value = sample.style;
+  $('#contrast').value = sample.contrast;
+  $('#brightness').value = sample.brightness;
+  $('#ink-lift').value = sample.inkLift;
+  updateOutput();
 }
 
 function stopSlideshow() {
@@ -279,7 +317,7 @@ async function importFile(file) {
 
 async function copyText() {
   if (!currentOutput) return;
-  const text = currentOutput.rows.join('\n');
+  const text = plainOutput().rows.join('\n');
   try {
     await navigator.clipboard.writeText(text);
   } catch {
@@ -297,6 +335,13 @@ async function copyText() {
     }
   }
   toast('ASCII copied. Keep it in a monospace font.', 'ASCII скопирован. Используйте моноширинный шрифт.');
+}
+
+function plainOutput() {
+  if (currentOutput.style === 'ink' && currentOutput.color) {
+    return convert(currentImage, { ...getSettings(), style: 'simple', color: false, inkLift: 0 });
+  }
+  return currentOutput;
 }
 
 function escapeXML(text) {
@@ -341,7 +386,7 @@ function downloadBlob(blob, extension) {
 
 function exportFile(format) {
   if (!currentOutput) return;
-  if (format === 'txt') downloadBlob(new Blob([currentOutput.rows.join('\n')], { type: 'text/plain;charset=utf-8' }), 'txt');
+  if (format === 'txt') downloadBlob(new Blob([plainOutput().rows.join('\n')], { type: 'text/plain;charset=utf-8' }), 'txt');
   if (format === 'svg') downloadBlob(new Blob([svgExport(currentOutput)], { type: 'image/svg+xml' }), 'svg');
   if (format === 'png') {
     const canvas = document.createElement('canvas');
@@ -403,8 +448,14 @@ async function initializeArtwork() {
   const tasks = $$('[data-art], [data-output]').map(async element => {
     const id = element.dataset.art || element.dataset.output;
     try {
-      const image = await loadImage(`assets/${id}.png`);
-      const output = convert(image, { ...defaults, width: Number(element.dataset.width), color: element.dataset.color === 'true' });
+      const sample = samples.find(item => item.id === id);
+      const image = await loadImage(sample?.file || `assets/${id}.png`);
+      const output = convert(image, { ...defaults,
+        style: element.dataset.style || sample?.style || 'simple',
+        contrast: Number(element.dataset.contrast || sample?.contrast || 115) / 100,
+        brightness: Number(element.dataset.brightness ?? sample?.brightness ?? 0),
+        inkLift: Number(element.dataset.inkLift ?? sample?.inkLift ?? 0),
+        width: Number(element.dataset.width), color: element.dataset.color === 'true' });
       if (element.dataset.output) renderTextOutput(element, output);
       else drawASCII($('canvas', element), output);
     } catch { /* A user upload remains available if a bundled demo fails. */ }
@@ -421,8 +472,8 @@ function changeLanguage(value) {
     button.setAttribute('aria-pressed', String(button.dataset.lang === value));
   }
   const labels = value === 'ru'
-    ? ['Подробный / $@B%8&WM#*', 'Простой / .:-=+*#%@', 'Плотный / .,:;ox%#@', 'Блоки / ░▒▓█', 'Двоичный / 01']
-    : ['Detailed / $@B%8&WM#*', 'Simple / .:-=+*#%@', 'Dense / .,:;ox%#@', 'Blocks / ░▒▓█', 'Binary / 01'];
+    ? ['Подробный / $@B%8&WM#*', 'Простой / .:-=+*#%@', 'Плотный / .,:;ox%#@', 'Блоки / ░▒▓█', 'Двоичный / 01', 'Цветные знаки / @%#&']
+    : ['Detailed / $@B%8&WM#*', 'Simple / .:-=+*#%@', 'Dense / .,:;ox%#@', 'Blocks / ░▒▓█', 'Binary / 01', 'Color ink / @%#&'];
   $$('#style option').forEach((option, index) => option.textContent = labels[index]);
   setStatus();
   updateOutput();
@@ -436,7 +487,11 @@ for (const button of $$('[data-load]')) button.addEventListener('click', () => {
 for (const button of $$('#presets button')) button.addEventListener('click', () => applyPreset(button.dataset.preset));
 for (const button of $$('[data-preset-link]')) button.addEventListener('click', () => { applyPreset(button.dataset.presetLink); scrollToStudio(); });
 for (const input of $$('.controls input, .controls select, .advanced input')) {
-  input.addEventListener('input', () => { currentPreset = ''; highlightPreset(); scheduleUpdate(); });
+  input.addEventListener('input', () => {
+    if (input.id === 'style' && input.value === 'ink') $('#color').checked = true;
+    if (input.id === 'color' && !input.checked && $('#style').value === 'ink') $('#style').value = 'simple';
+    currentPreset = ''; highlightPreset(); scheduleUpdate();
+  });
 }
 $('#reset').addEventListener('click', () => { applyPreset('sculpted'); toast('Settings reset. Your image stays.', 'Настройки сброшены. Изображение сохранено.'); });
 $('#copy').addEventListener('click', copyText);
@@ -455,9 +510,7 @@ document.addEventListener('visibilitychange', () => { if (document.hidden) stopS
 $('#use-style').addEventListener('click', () => {
   const sample = samples[currentSample];
   applyPreset(sample.preset);
-  $('#width').value = sample.width;
-  $('#color').checked = sample.color;
-  updateOutput();
+  applySampleLook(sample);
   toast('Sample settings applied to your current image.', 'Настройки образца применены к вашему изображению.');
 });
 $('#expand').addEventListener('click', () => {

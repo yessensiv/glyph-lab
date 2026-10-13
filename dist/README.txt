@@ -11,10 +11,13 @@ The bundled JetBrains Mono font is licensed under the SIL Open Font License;
 see assets/fonts/OFL.txt. The site code remains MIT licensed.
 Files are processed using Canvas and ImageBitmap on the visitor's device.
 
-Controls: image upload/drop/paste; presets; 40–280 columns; five character
-ramps; color; invert; brightness; contrast; cell aspect; dithering.
+Controls: image upload/drop/paste; presets; 40–280 columns; six character
+ramps; color; invert; brightness; contrast; cell aspect; dithering; color ink lift.
 Exports: plain-text clipboard, TXT, PNG, SVG.
-Demo images: five project-supplied artworks and photographs. Their rights
+Color ink preserves this visual style in PNG and SVG. Clipboard and TXT use
+a brightness-based monochrome ramp so the text remains recognizable without color.
+Demo images: five project-supplied artworks and photographs, plus an original
+procedural orbital sculpture for a compact ASCII example. Supplied image rights
 remain with their respective owners; the MIT code license does not grant
 additional rights to these images.
 Languages: English and Russian.

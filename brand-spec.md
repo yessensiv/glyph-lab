@@ -34,3 +34,13 @@ more generous section rhythm and clearer artwork captions. No UI shadows or glow
 
 Headline motion: medium (600) letter mask, 152 columns with gaps between glyphs,
 27 rows, 12 fps. Pause, visibility suspension, and reduced-motion fallback.
+
+## ASCII example readability
+
+Photo examples use individual widths, tone settings, and color exposure.
+Color ink uses a short, uniformly dense printable ASCII palette so dark pixels
+are not attenuated both by sparse glyphs and dark ink. Color ink lift compensates
+for character whitespace. PNG and SVG use the same color values and geometry;
+plain clipboard/TXT fall back to a luminance-based ramp for readable text.
+The 56-column chat scene is replaced with the original procedural orbital loop.
+The supplied listening-room photo remains a gallery image and studio sample.
