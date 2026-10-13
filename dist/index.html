@@ -11,6 +11,7 @@
   <link rel="preload" href="assets/fonts/JetBrainsMono.ttf" as="font" type="font/ttf" crossorigin>
   <link rel="stylesheet" href="refined.css">
   <script src="app.js" defer></script>
+  <script src="title-motion.js" defer></script>
 </head>
 <body>
 <a href="#studio" class="skip-link" data-ru="Перейти к студии">Skip to studio</a>
@@ -26,7 +27,7 @@
   <main>
     <section class="hero" aria-labelledby="hero-title">
       <div class="hero-copy">
-        <p class="eyebrow" data-ru="/ ИЗОБРАЖЕНИЕ → СИМВОЛЫ">/ IMAGE → CHARACTERS</p>
+        <div class="hero-eyebrow-row"><p class="eyebrow" data-ru="/ ИЗОБРАЖЕНИЕ → СИМВОЛЫ">/ IMAGE → CHARACTERS</p><button type="button" id="toggle-title-motion" class="title-motion-toggle" aria-label="Pause title animation" aria-pressed="false" hidden>Ⅱ</button></div>
         <h1 id="hero-title" aria-label="Make it ASCII. Image to ASCII art"><span class="hero-lead" aria-hidden="true">Make it</span><span class="sr-only">Make it ASCII.</span><svg viewBox="0 0 580 148" role="presentation" aria-hidden="true"><defs><pattern id="letter-texture" width="6.5" height="5" patternUnits="userSpaceOnUse"><text x="0" y="4.5" fill="#ededef" font-size="5" font-family="monospace">#@</text></pattern><mask id="title-mask"><text x="0" y="129" fill="white" font-size="143" font-weight="800" font-family="JetBrains Mono,monospace" textLength="572" lengthAdjust="spacingAndGlyphs">ASCII.</text></mask></defs><rect width="580" height="148" fill="url(#letter-texture)" mask="url(#title-mask)"/></svg></h1>
         <p class="hero-description" data-ru="Превратите изображение в текст с характером. Настройте детали, сохраните цвет и создайте то, чем захочется поделиться.">Turn your images into text with texture. Set the detail, keep the colors, and make something worth sharing.</p>
         <div class="actions"><button class="button primary" data-upload data-ru="Создать ASCII ↗">Create ASCII <span>↗</span></button><button class="button secondary" data-load="shell" data-ru="Попробовать образец ↗">Explore a sample <span>↗</span></button></div>

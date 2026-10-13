@@ -21,6 +21,7 @@ index.html  — page structure and copy
 style.css   — responsive visual design
 refined.css — typography and composition refinement
 app.js      — conversion, controls, exports, translation
+title-motion.js — animated ASCII headline, pause and reduced-motion support
 assets/     — original artwork and favicon
 LICENSE.txt — MIT license
 
