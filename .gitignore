@@ -1,0 +1,4 @@
+qa-fixtures/
+*.tar.gz
+*.log
+.openai/credentials*
