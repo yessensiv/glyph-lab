@@ -12,16 +12,16 @@
   texture.setAttribute('mask', 'url(#title-mask)');
   texture.setAttribute('fill', '#ededef');
   texture.setAttribute('font-family', 'monospace');
-  texture.setAttribute('font-size', '5');
+  texture.setAttribute('font-size', '4.5');
   texture.setAttribute('aria-hidden', 'true');
   texture.style.display = 'none';
-  const columns = 180;
-  const rowCount = 30;
+  const columns = 144;
+  const rowCount = 25;
   const rows = [];
   for (let y = 0; y < rowCount; y++) {
     const row = document.createElementNS(ns, 'text');
     row.setAttribute('x', '0');
-    row.setAttribute('y', String(y * 5 + 4.5));
+    row.setAttribute('y', String(y * 6 + 4.5));
     row.setAttribute('textLength', '585');
     row.setAttribute('lengthAdjust', 'spacingAndGlyphs');
     texture.append(row);
@@ -36,7 +36,7 @@
   let lastPaint = 0;
   let phase = 0;
   let lastTick = 0;
-  const glyphs = '#%@MW&8XO+=*';
+  const glyphs = ':+=x*%#@';
 
   function paint(time) {
     for (let y = 0; y < rowCount; y++) {
@@ -44,12 +44,12 @@
       for (let x = 0; x < columns; x++) {
         const wave = Math.sin(x * .105 - time * 1.15 + y * .17);
         const ripple = Math.sin(y * .42 + x * .055 + time * .7);
-        // A dense base keeps the word readable; a diagonal ribbon changes its texture.
-        const index = Math.floor((wave * .5 + .5) * 6 + (ripple * .5 + .5) * 4);
+        // Air between cells keeps the individual symbols distinct as the ribbon moves.
+        const index = Math.floor((wave * .5 + .5) * 5 + (ripple * .5 + .5) * 2);
         line += glyphs[index];
       }
       rows[y].textContent = line;
-      rows[y].setAttribute('opacity', String(.78 + .22 * (Math.sin(y * .2 - time) * .5 + .5)));
+      rows[y].setAttribute('opacity', String(.68 + .22 * (Math.sin(y * .2 - time) * .5 + .5)));
     }
   }
 
