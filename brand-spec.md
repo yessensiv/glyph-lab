@@ -16,3 +16,13 @@ Assets: dist/assets/shell.webp, terrain.webp, arch.webp, orbit.webp — original
 All displayed ASCII previews are converted from these sources using the actual tool engine.
 Brand glyph is typographic [ : : ], with a stacked GLYPH / LAB wordmark.
 English and Russian interface. Source is available as a local MIT-licensed download.
+
+## Typography refinement
+
+Mode: redesign with identity preserved. Protected contracts: all section anchors,
+conversion settings, source loading, translations, and export formats.
+Bundled official JetBrains Mono variable font in dist/assets/fonts/; SIL OFL.
+Hero: solid "Make it" followed by character-filled "ASCII.". Increased body and
+control sizes, lighter heading weights, stronger title-to-metadata contrast.
+Composition: bordered artwork stage, explicit two-line studio and gallery titles,
+more generous section rhythm and clearer artwork captions. No UI shadows or glow.

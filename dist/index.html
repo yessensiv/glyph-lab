@@ -8,6 +8,8 @@
   <title>GLYPH LAB — Image to ASCII Studio</title>
   <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
   <link rel="stylesheet" href="style.css">
+  <link rel="preload" href="assets/fonts/JetBrainsMono.ttf" as="font" type="font/ttf" crossorigin>
+  <link rel="stylesheet" href="refined.css">
   <script src="app.js" defer></script>
 </head>
 <body>
@@ -24,10 +26,10 @@
   <main>
     <section class="hero" aria-labelledby="hero-title">
       <div class="hero-copy">
-        <p class="eyebrow" data-ru="/ ОТ ПИКСЕЛЕЙ К СИМВОЛАМ">/ FROM PIXELS TO CHARACTERS</p>
-        <h1 id="hero-title" aria-label="Image to ASCII art"><span class="sr-only">Image to ASCII art</span><svg viewBox="0 0 580 206" role="presentation" aria-hidden="true"><defs><pattern id="letter-texture" width="7" height="5" patternUnits="userSpaceOnUse"><text x="0" y="4" fill="#ededef" font-size="4.5" font-family="monospace">#@</text></pattern><mask id="title-mask"><text x="0" y="86" fill="white" font-size="86" font-weight="900" font-family="monospace" textLength="570" lengthAdjust="spacingAndGlyphs">IMAGE TO</text><text x="0" y="186" fill="white" font-size="86" font-weight="900" font-family="monospace" textLength="570" lengthAdjust="spacingAndGlyphs">ASCII ART</text></mask></defs><rect width="580" height="206" fill="url(#letter-texture)" mask="url(#title-mask)"/></svg></h1>
-        <p class="hero-description" data-ru="У каждой картинки есть другая сторона. Превратите её в символы — настройте детализацию, сохраните цвета и заберите результат с собой.">Every picture has another language.<br>Turn yours into characters. Tune the detail, keep the colors, and take it anywhere.</p>
-        <div class="actions"><button class="button primary" data-upload data-ru="Загрузить изображение ↗">Upload an image <span>↗</span></button><button class="button secondary" data-load="shell" data-ru="Попробовать образец ↗">Try a sample <span>↗</span></button></div>
+        <p class="eyebrow" data-ru="/ ИЗОБРАЖЕНИЕ → СИМВОЛЫ">/ IMAGE → CHARACTERS</p>
+        <h1 id="hero-title" aria-label="Make it ASCII. Image to ASCII art"><span class="hero-lead" aria-hidden="true">Make it</span><span class="sr-only">Make it ASCII.</span><svg viewBox="0 0 580 148" role="presentation" aria-hidden="true"><defs><pattern id="letter-texture" width="6.5" height="5" patternUnits="userSpaceOnUse"><text x="0" y="4.5" fill="#ededef" font-size="5" font-family="monospace">#@</text></pattern><mask id="title-mask"><text x="0" y="129" fill="white" font-size="143" font-weight="800" font-family="JetBrains Mono,monospace" textLength="572" lengthAdjust="spacingAndGlyphs">ASCII.</text></mask></defs><rect width="580" height="148" fill="url(#letter-texture)" mask="url(#title-mask)"/></svg></h1>
+        <p class="hero-description" data-ru="Превратите изображение в текст с характером. Настройте детали, сохраните цвет и создайте то, чем захочется поделиться.">Turn your images into text with texture. Set the detail, keep the colors, and make something worth sharing.</p>
+        <div class="actions"><button class="button primary" data-upload data-ru="Создать ASCII ↗">Create ASCII <span>↗</span></button><button class="button secondary" data-load="shell" data-ru="Попробовать образец ↗">Explore a sample <span>↗</span></button></div>
         <p class="trust" data-ru="Бесплатно · Без регистрации · Локально · TXT / PNG / SVG">Free · No signup · On your device · TXT / PNG / SVG</p>
         <div class="hero-bottom"><span class="tiny" data-ru="> ОТКРЫТЫЙ КОД. НЕОГРАНИЧЕННЫЕ ИДЕИ.">> OPEN SOURCE. OPEN POSSIBILITIES.</span><a href="#studio" class="tiny" data-ru="Открыть студию ↓">Meet the studio ↓</a></div>
       </div>
@@ -44,10 +46,10 @@
 
     <section id="studio" class="section studio">
       <p class="eyebrow" data-ru="/ ВАША ТВОРЧЕСКАЯ СТУДИЯ">/ YOUR CREATIVE WORKBENCH</p>
-      <div class="section-heading"><h2 data-ru="Пиксели на входе.<br>Символы на выходе.">Pixels in. Characters out.</h2><p class="steps-line" data-ru="01 Загрузите / 02 Настройте / 03 Экспортируйте">01 Upload <span>/</span> 02 Refine <span>/</span> 03 Export</p></div>
+      <div class="section-heading"><h2 data-ru="Ваше изображение.<br>Ваш алфавит.">Your image.<br>Your alphabet.</h2><p class="steps-line" data-ru="01 Загрузите / 02 Настройте / 03 Экспортируйте">01 Upload <span>/</span> 02 Refine <span>/</span> 03 Export</p></div>
       <div class="upload-zone" id="dropzone">
         <span class="upload-symbol" aria-hidden="true">[ ↑ ]</span>
-        <div class="upload-copy"><h3 data-ru="Перетащите картинку. Или начните с нашей.">Drop an image. Or start with ours.</h3><p data-ru="JPG, PNG, WebP, GIF · Можно вставить из буфера · Ваш файл остаётся в браузере">JPG, PNG, WebP, GIF · Paste from clipboard · Your file stays in this browser</p></div>
+        <div class="upload-copy"><h3 data-ru="Всё начинается с одного изображения.">It starts with a single image.</h3><p data-ru="Перетащите, вставьте или выберите JPG, PNG, WebP, GIF. Ваш файл остаётся здесь.">Drop, paste, or choose a JPG, PNG, WebP, or GIF. Your file stays right here.</p></div>
         <div class="upload-actions"><button class="button primary" data-upload data-ru="Выбрать файл ↗">Choose file ↗</button><button class="ghost" data-load="shell" data-ru="Раковина ↗">Spiral study ↗</button><button class="ghost" data-load="terrain" data-ru="Рельеф ↗">Try terrain ↗</button></div>
         <input type="file" id="file-input" accept="image/jpeg,image/png,image/webp,image/gif" hidden>
       </div>
@@ -76,7 +78,7 @@
 
     <section id="examples" class="section">
       <p class="eyebrow" data-ru="/ ЧЕТЫРЕ ОРИГИНАЛА. БЕСКОНЕЧНЫЕ ВАРИАЦИИ.">/ FOUR ORIGINALS. ENDLESS INTERPRETATIONS.</p>
-      <h2 data-ru="Исследования в символах.">Studies in translation.</h2><p class="intro" data-ru="Форма, ритм и свет — собранные заново из символов. Сдвиньте разделитель и попробуйте сами.">Form, rhythm, and light — rebuilt one character at a time. Drag the divider, then try your own take.</p>
+      <h2 data-ru="Тот же образ.<br>Другое ощущение.">Same image.<br>Different feeling.</h2><p class="intro" data-ru="Знакомая форма. Совсем другая текстура. Сдвиньте разделитель и найдите свою интерпретацию.">A familiar shape. An entirely new texture. Slide between the two, then find your own interpretation.</p>
       <div class="gallery">
         <article class="art-card"><div class="compare" data-art="shell" data-width="160" data-color="true"><img src="assets/shell.webp" alt="Sculptural spiral with warm and cool bands" width="900" height="900" loading="lazy"><div class="ascii-layer"><canvas aria-label="Spiral in colored ASCII"></canvas></div><span class="corner original" data-ru="Оригинал">Original</span><span class="corner converted">ASCII</span><div class="divider"><span>‹ ›</span></div><input class="compare-range" type="range" min="0" max="100" value="50" aria-label="Compare spiral original and ASCII"></div><div class="card-copy"><p class="tiny">> 01 / ORGANIC / 160 COL</p><h3 data-ru="Спираль времени.">Spiral study.</h3><p data-ru="Повторение, которое никогда не повторяется.">A repeating rhythm that never quite repeats.</p><button class="text-link" data-load="shell" data-ru="Попробовать этот образец ↗">Try this artwork ↗</button></div></article>
         <article class="art-card"><div class="compare" data-art="terrain" data-width="220"><img src="assets/terrain.webp" alt="Monochrome topographic terrain study" width="900" height="900" loading="lazy"><div class="ascii-layer"><canvas aria-label="Terrain in monochrome ASCII"></canvas></div><span class="corner original" data-ru="Оригинал">Original</span><span class="corner converted">ASCII</span><div class="divider"><span>‹ ›</span></div><input class="compare-range" type="range" min="0" max="100" value="50" aria-label="Compare terrain original and ASCII"></div><div class="card-copy"><p class="tiny">> 02 / TOPOGRAPHY / 220 COL</p><h3 data-ru="За горизонтом.">Quiet topography.</h3><p data-ru="Каждая высота становится новой строкой.">Ridges and valleys, mapped into marks.</p><button class="text-link" data-load="terrain" data-ru="Попробовать этот образец ↗">Try this artwork ↗</button></div></article>

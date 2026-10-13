@@ -7,6 +7,8 @@ Run a static HTTP server in this directory, for example:
 Then open http://localhost:8080
 
 No build, package installation, API key, account, or backend is required.
+The bundled JetBrains Mono font is licensed under the SIL Open Font License;
+see assets/fonts/OFL.txt. The site code remains MIT licensed.
 Files are processed using Canvas and ImageBitmap on the visitor's device.
 
 Controls: image upload/drop/paste; presets; 40–280 columns; five character
@@ -17,6 +19,7 @@ Languages: English and Russian.
 
 index.html  — page structure and copy
 style.css   — responsive visual design
+refined.css — typography and composition refinement
 app.js      — conversion, controls, exports, translation
 assets/     — original artwork and favicon
 LICENSE.txt — MIT license

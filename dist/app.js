@@ -109,14 +109,14 @@ function convert(image, settings) {
 function drawASCII(canvas, output) {
   const ctx = canvas.getContext('2d');
   const fontSize = 12;
-  ctx.font = `${fontSize}px monospace`;
+  ctx.font = `${fontSize}px "JetBrains Mono", monospace`;
   const cellWidth = ctx.measureText('M').width;
   const cellHeight = cellWidth / output.aspect;
   canvas.width = Math.ceil(output.width * cellWidth);
   canvas.height = Math.ceil(output.height * cellHeight);
   ctx.fillStyle = '#0a0a0b';
   ctx.fillRect(0, 0, canvas.width, canvas.height);
-  ctx.font = `${fontSize}px monospace`;
+  ctx.font = `${fontSize}px "JetBrains Mono", monospace`;
   ctx.textBaseline = 'middle';
   if (!output.color) {
     ctx.fillStyle = '#d4d4da';
@@ -304,12 +304,12 @@ function escapeXML(text) {
 
 function svgExport(output) {
   const measuring = document.createElement('canvas').getContext('2d');
-  measuring.font = '12px monospace';
+  measuring.font = '12px "JetBrains Mono", monospace';
   const cellWidth = measuring.measureText('M').width;
   const cellHeight = cellWidth / output.aspect;
   const w = Math.ceil(output.width * cellWidth);
   const h = Math.ceil(output.height * cellHeight);
-  let svg = `<svg xmlns="http://www.w3.org/2000/svg" width="${w}" height="${h}" viewBox="0 0 ${w} ${h}"><title>GLYPH LAB ASCII artwork</title><rect width="100%" height="100%" fill="#0a0a0b"/><g font-family="monospace" font-size="12" xml:space="preserve">`;
+  let svg = `<svg xmlns="http://www.w3.org/2000/svg" width="${w}" height="${h}" viewBox="0 0 ${w} ${h}"><title>GLYPH LAB ASCII artwork</title><rect width="100%" height="100%" fill="#0a0a0b"/><g font-family="JetBrains Mono,monospace" font-size="12" xml:space="preserve">`;
   output.rows.forEach((row, y) => {
     const baseline = (y + .5) * cellHeight;
     if (!output.color) {
@@ -481,6 +481,7 @@ document.addEventListener('paste', event => {
 });
 
 async function initialize() {
+  await document.fonts.ready;
   let preferredLanguage;
   try { preferredLanguage = localStorage.getItem('glyph-lab-language'); } catch { /* No persistence required. */ }
   if (preferredLanguage === 'ru') changeLanguage('ru');
